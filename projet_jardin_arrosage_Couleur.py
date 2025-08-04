@@ -8,7 +8,8 @@ import dateutil.parser
 from colorama import Fore,Style, init
 
 
-##Rajout de cette ligne pour apporter changement dans le script pour test branche git
+
+##Test pour changement 
 
 
 #à faire au début du script pour que tout fonctionne sur tous les systemes
