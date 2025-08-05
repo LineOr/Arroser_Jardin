@@ -1,0 +1,61 @@
+name: CI/CD pour GitHub Pages
+
+on:
+  push:
+    branches:
+        - "main"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout du code
+          uses: actions/checkout@v3
+
+        - name: Construire le site
+          run: |
+            echo "Démarrage de la phase de construction..."
+            # Dans un vrai projet , ce serait une commande 'npm run build'
+            echo "Construction terminée!"
+            # Créer un dossier de sortie 'dist' pour le déploiement
+            mkdir dist
+            cp index.html dist/index.html
+
+        - name: Archive des artefacts
+          uses: actions/upload-artifact@v3
+          with:
+            name: site-artefact
+            path: dis
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+        - name: Téléchargement des artefacts
+          uses: actions/download-artifact@v3
+          with:
+              name: site-artefact
+              path: ./
+
+        - name: Lancer des tests
+          run: |
+            echo "Démarrage des tests..."
+            if [ -f "./index.html"]; then
+              echo "Test réussi :  Le fichier index.html existe."
+            else
+              echo "Test échoué : Le fichier index.html est manquant."
+              exit  
+            fi
+  deploy:
+    runs-on : ubuntu-latest
+    needs: test
+    permissions:
+      pages: write   #Autorisation de déployer sur les pages GitHub
+      id-token: write   #Autorisation de se connecter avec le jeton par défaut
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+        - name: Déploiement sur Github Pages
+          id: deployment
+          uses: actions/deploy-pages@v4
