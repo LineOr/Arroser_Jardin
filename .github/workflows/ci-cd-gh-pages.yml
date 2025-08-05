@@ -1,5 +1,5 @@
 name: CI/CD pour GitHub Pages
-
+#fichier configuraiton pour workflow GitHub Actions
 on:
   push:
     branches:
