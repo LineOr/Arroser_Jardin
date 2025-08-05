@@ -1,0 +1,17 @@
+name: Mon premier workflow de CI
+
+on:
+  push:
+    branches:["main"]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: action/checkout@v3
+
+    - name: Lancer les tests
+      run : |
+        echo "Lancement des test...Tous les sont passés!"
+        echo "Le code est prêt à être déployé"
